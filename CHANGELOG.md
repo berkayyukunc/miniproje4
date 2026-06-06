@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/berkayyukunc/miniproje4/compare/v1.0.0...v1.1.0) (2026-06-06)
+
+
+### Features
+
+* enable gunicorn access logging ([83519f2](https://github.com/berkayyukunc/miniproje4/commit/83519f27956ce7732cada6ffaac1c2fd0b65a3df))
+
 # 1.0.0 (2026-06-06)
 
 
