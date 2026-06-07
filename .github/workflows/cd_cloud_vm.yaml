@@ -1,0 +1,48 @@
+name: CD Cloud VM Deployment
+
+on:
+  workflow_run:
+    workflows: ["CI Semantic Versioning"]
+    types:
+      - completed
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to Cloud VM
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Deploy to VM via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VM_IP }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          port: 22
+          script: |
+            echo "Deploying to VM..."
+            # Create project directory if it doesn't exist
+            mkdir -p ~/app
+            cd ~/app
+            
+            # If git repo not cloned yet, clone it. Otherwise pull latest
+            if [ ! -d "backend-cloud/.git" ]; then
+              git clone https://github.com/${{ github.repository }} backend-cloud
+            fi
+            
+            cd backend-cloud
+            git fetch --all
+            git reset --hard origin/main
+            
+            # Run docker-compose build and restart container
+            cd backend-cloud
+            docker compose down || true
+            docker compose up -d --build
+            
+            echo "Deployment finished successfully!"
+            docker ps

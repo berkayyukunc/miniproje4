@@ -1,0 +1,33 @@
+name: CI Linting
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    name: CI Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff pre-commit
+
+      - name: Run Ruff Lint Check
+        run: ruff check backend-cloud
+ 
+      - name: Run Ruff Format Check
+        run: ruff format --check backend-cloud
+ 
+      - name: Run Pre-Commit check
+        run: cd backend-cloud && pre-commit run --all-files
