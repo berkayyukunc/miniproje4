@@ -1,3 +1,10 @@
+# 1.0.0 (2026-06-07)
+
+
+### Features
+
+* combine local backend, cloud backend, and flutter client into one repo ([c10fa0e](https://github.com/berkayyukunc/miniproje4/commit/c10fa0eae19ba413114a805031e5131dd9d2dfd7))
+
 # [1.1.0](https://github.com/berkayyukunc/miniproje4/compare/v1.0.0...v1.1.0) (2026-06-06)
 
 
